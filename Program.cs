@@ -3,7 +3,7 @@ namespace comp_sys_lab1
 {
     class Program
     {
-        static readonly uint taskCount = 3000;
+        static readonly uint taskCount = 20000;
         static readonly uint processorsCount = 5;
         static readonly uint elapsedTime = 10000;
         static readonly uint minimalL = 10;
@@ -136,15 +136,15 @@ namespace comp_sys_lab1
             OutAndClean(processorUnits, elapsedTime);
             // 7. Second algo
             Console.WriteLine("===Slowest processor unit as scheduler===");
-
+            SchedulerSPUaS schedulerSPUaS = new(processorUnits, tasks, elapsedTime);
             OutAndClean(processorUnits, elapsedTime);
             // 8. Third algo
             Console.WriteLine("===Fastest processor unit as scheduler by interrupt===");
-
+            SchedulerFPUaS schedulerFPUaS = new(processorUnits,tasks, elapsedTime,20,4,false);
             OutAndClean(processorUnits, elapsedTime);
             // 9. Third algo with best settings
             Console.WriteLine("===Fastest processor unit as scheduler by interrupt(best settings)===");
-
+            SchedulerFPUaS schedulerFPUaSBestSettings = new(processorUnits, tasks, elapsedTime, 240, 1,true);
             OutAndClean(processorUnits, elapsedTime);
             // 10. Exit
             do

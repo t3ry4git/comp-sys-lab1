@@ -9,10 +9,11 @@
         private uint completedTasksCount = 0;
         private uint completedOperationsCount = 0;
         private uint elapsedOnScheduler = 0;
-        private bool workedAsScheduler = false;
-        private bool workingAsScheduler = false;
-        private uint workingInSchedulerModeTime = 0;
-        private uint workingInDefaultModeTime = 0;
+        public bool workedAsScheduler = false;
+        public bool workingAsScheduler = false;
+        public uint workingInSchedulerModeTime = 0;
+        public uint workingInDefaultModeTime = 0;
+        public uint lastLoadTime = 0;
         private List<Task> queue = [];
 
         public ProcessorUnit(uint myNumber) { this.myNumber = myNumber; }
@@ -46,7 +47,11 @@
 
         public uint GetTimeElapsedOnScheduler() => elapsedOnScheduler;
 
-        public void AddTask(Task task) => queue.Add(task);
+        public void AddTask(Task task)
+        {
+            queue.Add(task);
+            lastLoadTime = task.complexity;
+        }
 
         private void RemTask(Task task) => queue.Remove(task);
 
@@ -93,5 +98,7 @@
 
         public void IncSchModeTime() => workingInSchedulerModeTime++;
         public void IncDefModeTime() => workingInDefaultModeTime++;
+
+        public uint getMyNumber() => myNumber;
     }
 }
