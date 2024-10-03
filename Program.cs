@@ -70,11 +70,12 @@ namespace comp_sys_lab1
             return new Tuple<uint, uint>(lres, hres);
         }
 
-        static public void OutTable(uint completedTasksCount, List<ProcessorUnit> processorUnits, uint elapsedTime)
+        static public void OutTable(List<ProcessorUnit> processorUnits, uint elapsedTime)
         {
-            Console.WriteLine($"Completed tasks: {completedTasksCount}");
-            for (int i = 0; i < processorUnits.Count; i++)
-                Console.WriteLine($"Processor unit #{i + 1} have done {processorUnits[i].GetCompletedTasksCount()} tasks");
+            // Calculating statistics
+            ulong completedTasksCount = 0;
+            foreach (var processorUnit in processorUnits)
+                completedTasksCount += processorUnit.GetCompletedTasksCount();
 
             ulong potentialOperationsCount = 0;
             foreach (var processorUnit in processorUnits)
@@ -86,6 +87,11 @@ namespace comp_sys_lab1
 
             decimal efficiency = Math.Round((decimal)resultOperationsCount / potentialOperationsCount * 100, 2);
 
+            // Out statistics
+            Console.WriteLine($"Completed tasks: {completedTasksCount}");
+            for (int i = 0; i < processorUnits.Count; i++)
+                Console.WriteLine($"Processor unit #{i + 1} have done {processorUnits[i].GetCompletedTasksCount()} tasks");
+            
             Console.WriteLine($"Theoretical count of completed operations: {potentialOperationsCount}");
             Console.WriteLine($"Real count of completed operations: {resultOperationsCount}");
             Console.WriteLine($"Efficiency: {efficiency}");
@@ -95,9 +101,9 @@ namespace comp_sys_lab1
             foreach (var processorUnit in processorUnits)
                 processorUnit.Clear();
         }
-        static public void OutAndClean(uint completedTasksCount, List<ProcessorUnit> processorUnits, uint elapsedTime)
+        static public void OutAndClean(List<ProcessorUnit> processorUnits, uint elapsedTime)
         {
-            OutTable(completedTasksCount, processorUnits, elapsedTime);
+            OutTable(processorUnits, elapsedTime);
             cleanProcessorUnits(processorUnits);
         }
 
@@ -110,7 +116,7 @@ namespace comp_sys_lab1
             List<ProcessorUnit> processorUnits = [];
             for (uint i = 0; i < processorsCount; i++)
             {
-                processorUnits.Add(new ProcessorUnit());
+                processorUnits.Add(new ProcessorUnit(i));
                 SetProcessorPerfomance(processorUnits.Last(), Convert.ToUInt32(processorUnits.Count));
             }
             // 2. Set chance
@@ -126,20 +132,20 @@ namespace comp_sys_lab1
             Console.WriteLine($"Elapsed time: {elapsedTime} ms");
             // 6. First algo
             Console.WriteLine("===FIFO===");
-
-            OutAndClean(0, processorUnits, elapsedTime);
+            SchedulerFIFO schedulerFIFO = new(processorUnits, tasks, elapsedTime);
+            OutAndClean(processorUnits, elapsedTime);
             // 7. Second algo
             Console.WriteLine("===Slowest processor unit as scheduler===");
 
-            OutAndClean(0, processorUnits, elapsedTime);
+            OutAndClean(processorUnits, elapsedTime);
             // 8. Third algo
             Console.WriteLine("===Fastest processor unit as scheduler by interrupt===");
 
-            OutAndClean(0, processorUnits, elapsedTime);
+            OutAndClean(processorUnits, elapsedTime);
             // 9. Third algo with best settings
             Console.WriteLine("===Fastest processor unit as scheduler by interrupt(best settings)===");
 
-            OutAndClean(0, processorUnits, elapsedTime);
+            OutAndClean(processorUnits, elapsedTime);
             // 10. Exit
             do
             {

@@ -6,7 +6,7 @@
         private readonly double probability = Convert.ToDouble(probability) / 100.0;
         private readonly Random r = new();
 
-        private Task GenerateTask() => new(processorCombo[r.Next(0, processorCombo.Count - 1)],
+        private Task GenerateTask() => new(processorCombo[r.Next(1, processorCombo.Count - 1)],
             Convert.ToUInt32(r.Next(Convert.ToInt32(borders.Item1), Convert.ToInt32(borders.Item2))));
 
         public List<Task> GetTasks(uint count)
@@ -14,7 +14,10 @@
             List<Task> tasks = [];
             for (uint i = 0; i < count; i++)
                 if (r.NextDouble() < probability)
-                    tasks.Add(GenerateTask());
+                {
+                    Task gen = GenerateTask();
+                    tasks.Add(gen);
+                }
             return tasks;
         }
 
