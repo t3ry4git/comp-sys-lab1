@@ -47,7 +47,7 @@ namespace comp_sys_lab1
             uint lres;
             if (k == ConsoleKey.Y)
             {
-                Console.WriteLine($"Input minimal complexity(>= {slowestPerf * minimalL})");
+                Console.WriteLine($"Input minimal complexity(>= {slowestPerf * minimalL} AND <= {slowestPerf * maximumH})");
                 do
                 {
                     lres = Convert.ToUInt32(Console.ReadLine());
