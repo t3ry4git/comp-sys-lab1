@@ -75,6 +75,10 @@
                         IncCTC();
                     }
                 }
+                else
+                {
+                    IncDefModeTime();
+                }
             }
         }
 

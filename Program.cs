@@ -144,7 +144,7 @@ namespace comp_sys_lab1
             OutAndClean(processorUnits, elapsedTime);
             // 9. Third algo with best settings
             Console.WriteLine("===Fastest processor unit as scheduler by interrupt(best settings)===");
-            SchedulerFPUaS schedulerFPUaSBestSettings = new(processorUnits, tasks, elapsedTime, 240, 1,true);
+            SchedulerFPUaS schedulerFPUaSBestSettings = new(processorUnits, tasks, elapsedTime, 4, 1, false);
             OutAndClean(processorUnits, elapsedTime);
             // 10. Exit
             do

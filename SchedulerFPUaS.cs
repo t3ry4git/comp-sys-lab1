@@ -9,16 +9,19 @@
             {
                 
                 List<ProcessorUnit> emptyQueueUnits = processorUnits.FindAll(x => x.IsQueueEmpty());
-                foreach (ProcessorUnit processorUnit in emptyQueueUnits)
+                if (processorUnits.MaxBy(x => x.GetPerformance())!.workingAsScheduler)
                 {
-                    Task desiredTask = tasks
-        .Where(t => t.availableProcessors.Contains(processorUnit.getMyNumber()))
-        .OrderBy(t => t.availableProcessors.Count)
-        .FirstOrDefault()!;
-                    if (desiredTask != null)
+                    foreach (ProcessorUnit processorUnit in emptyQueueUnits)
                     {
-                        processorUnit.AddTask(desiredTask);
-                        tasks.Remove(desiredTask);
+                        Task desiredTask = tasks
+            .Where(t => t.availableProcessors.Contains(processorUnit.getMyNumber()))
+            .OrderBy(t => t.availableProcessors.Count)
+            .FirstOrDefault()!;
+                        if (desiredTask != null)
+                        {
+                            processorUnit.AddTask(desiredTask);
+                            tasks.Remove(desiredTask);
+                        }
                     }
                 }
                 foreach (ProcessorUnit unit in processorUnits)
